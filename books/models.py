@@ -60,7 +60,7 @@ class Book(Resource):
     price = models.CharField(_("pricing"), blank=True, default='', max_length=20)
     pages = models.PositiveIntegerField(_("pages"), null=True, blank=True)
     isbn = models.CharField(_("ISBN"), blank=True, max_length=20, unique=True, db_index=True)
-    cover = models.ImageField(_("cover picture"), upload_to=book_cover_path, null=True, blank=True)
+    cover = models.ImageField(_("cover picture"), upload_to=book_cover_path, default='', blank=True)
 
     class Meta:
         # more info: https://docs.djangoproject.com/en/2.2/ref/models/options/

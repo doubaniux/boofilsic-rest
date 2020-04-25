@@ -73,11 +73,11 @@ class CommentListCreateView(views.ListCreateView):
         if rating is None:
             return
         if resource.rating is not None:
-            # exclude "deleted" objects to keep integrity
-            rating_quantity = resource.comments.filter(is_deleted=False).exclude(rating=None).count()
-            resource.rating = (rating + resource.rating * rating_quantity) / (rating_quantity + 1)
+            resource.rating_number += 1
+            resource.rating_total_score += int(rating * 2)
         else:
-            resource.rating = rating
+            resource.rating_number = 1
+            resource.rating_total_score = int(rating * 2)
         resource.save()
 
 
@@ -178,11 +178,13 @@ class CommentRetrieveUpdateDestroyView(views.RetrieveUpdateDestroyView):
             "`%s` has no field `comments`."
             % resource.__class__.__name__
         )
-        rating_quantity = resource.comments.filter(is_deleted=False).exclude(rating=None).count()
-        if rating_quantity == 1:
+        if resource.rating_number == 1:
             resource.rating = None
-        elif rating_quantity >= 2:
-            resource.rating = (resource.rating * rating_quantity - old_rating) / (rating_quantity - 1)
+            resource.rating_number = None
+            resource.rating_total_score = None
+        elif resource.rating_number >= 2:
+            resource.rating_number -= 1;
+            resource.rating_total_score -= int(old_rating * 2)
         resource.save()
 
     def update_resource_rating(self, resource, old_rating, new_rating, partial):
@@ -196,21 +198,23 @@ class CommentRetrieveUpdateDestroyView(views.RetrieveUpdateDestroyView):
         if old_rating == new_rating:
             return
         if new_rating is not None:
-            # exclude "deleted" objects to keep integrity
-            rating_quantity = resource.comments.filter(is_deleted=False).exclude(rating=None).count()
-            # XOR conditions to test integrity of db
-            if (resource.rating is not None and rating_quantity == 0)\
-            or (resource.rating is None and rating_quantity != 0):
-                raise IntegrityError("comment rating and resource rating don't match.")
+            # # exclude "deleted" objects to keep integrity
+            # rating_quantity = resource.comments.filter(is_deleted=False).exclude(rating=None).count()
+            # # XOR conditions to test integrity of db
+            # if (resource.rating is not None and rating_quantity == 0)\
+            # or (resource.rating is None and rating_quantity != 0):
+            #     raise IntegrityError("comment rating and resource rating don't match.")
             if resource.rating is None:
-                resource.rating = new_rating
+                resource.rating_total_score = int(new_rating * 2)
+                resource.rating_number = 1
             else:
                 # add new rating to resource
                 if old_rating is None:
-                    resource.rating = (resource.rating * rating_quantity + new_rating) / (rating_quantity + 1)
+                    resource.rating_number += 1
+                    resource.rating_total_score += int(new_rating * 2)
                 # update rating
                 else:
-                    resource.rating = resource.rating + (new_rating - old_rating) / rating_quantity
+                    resource.rating_total_score += int((new_rating - old_rating) * 2)
             resource.save()
         else:
             # old_rating is not None and new_rating is None, substract rating from resource.

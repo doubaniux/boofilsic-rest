@@ -89,8 +89,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'donotban',
         'USER': 'donotban',
-        'PASSWORD': 'donotbansilvousplait',
-        'HOST': '172.17.8.35',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
             # 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_DEFAULT,

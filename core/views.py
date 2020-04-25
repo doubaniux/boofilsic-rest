@@ -50,16 +50,16 @@ class RetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         check_is_deleted_field(instance._meta.model)
         # transfer all data keys into lowercase
         cleaned_params = dict((k.lower(), v) for k, v in request.query_params.items())
-        if cleaned_params.get('hard') == 'true':
-            self.perform_hard_destroy(instance)
-            msg = {'hard': True}
-            code = status.HTTP_200_OK
-        else:
+        if cleaned_params.get('hard') == 'false':
             if instance.is_deleted:
                 raise Http404
             self.perform_destroy(instance)
+            msg = {'hard': False}
+            code = status.HTTP_200_OK
+        else:
+            self.perform_hard_destroy(instance)
             msg = None
-            code = status.HTTP_204_NO_CONTENT
+            code = status.HTTP_204_NO_CONTENT     
         return Response(data=msg, status=code)
 
     def perform_destroy(self, instance):

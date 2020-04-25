@@ -137,7 +137,7 @@ class BookCommentListCreate(CommentListCreateView):
     serializer_class = BookCommentSerializer
     resource_name = 'book'
 
-from rest_framework.generics import RetrieveUpdateDestroyAPIView as rest
+
 class BookCommentRetrieveUpdateDestroy(CommentRetrieveUpdateDestroyView):
     queryset = BookComment.objects.all()
     serializer_class = BookCommentSerializer

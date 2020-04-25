@@ -46,6 +46,7 @@ class BookSerializer(serializers.ModelSerializer):
             'language',
             'other',
             'rating',
+            'rating_number',
             'pages',
             'cover',
             'edited_time'

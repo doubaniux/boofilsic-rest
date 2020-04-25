@@ -125,16 +125,16 @@ Delete a book. By default the record will not be removed from the database, if t
 
 | querystring param | description | required |
 |-------------------|-------------|----------|
-| `hard` | When this is `true`, remove a record completely from the database. |❌|
+| `hard` | By default `true`, When this is `false`, remove a record completely from the database. |❌|
 
-**Request without `hard=true` will not result in cascade deletion.**
+**Request with `hard=false` will not result in cascade deletion.**
 
 #### DELETE /books/:book_id/comments/:comment_id/
 Delete a book comment. By default the record will not be removed from the database, if that is desired, use query string.
 
 | querystring param | description | required |
 |-------------------|-------------|----------|
-| `hard` | When this is `true`, remove a record completely from the database. |❌|
+| `hard` | By default `true`, When this is `false`, remove a record completely from the database. |❌|
 
 #### PATCH /books/:id/
 Partially update a book. Parameters are the same as the POST method.

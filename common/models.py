@@ -36,6 +36,8 @@ class Resource(models.Model):
     edited_time = models.DateTimeField(_("edited time"), auto_now_add=True)
     is_deleted = models.BooleanField(_("is deleted"), null=False, blank=True, default=False)
 
+    # every resource model should have a comments field
+
     class Meta:
         verbose_name = _("resource")
         verbose_name_plural = _("resources")
@@ -48,5 +50,5 @@ class Resource(models.Model):
         """ update rating before save to db """
         # NOTE need test here
         if self.rating_number and self.rating_total_score:
-            self.rating = Decimal(str(round(self.rating_total_score / self.rating_number, 1)))
+            self.rating = Decimal(str(round(self.rating_total_score  / (self.rating_number * 2), 1)))
         super().save(*args, **kwargs)
