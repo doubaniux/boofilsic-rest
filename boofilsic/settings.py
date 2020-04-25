@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': 'donotban',
         'USER': 'donotban',
         'PASSWORD': 'pleasedonotban',
-        'HOST': '49.233.200.133',
+        'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',
             # 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_DEFAULT,

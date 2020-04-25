@@ -9,7 +9,7 @@ class SimpleAuthentication(authentication.BaseAuthentication):
 
     def authenticate(self, request):
         # get request header Secret-Key
-        key = request.META.get('HTTP_SECRET_KEY')
+        key = request.META.get('HTTP_SECRET_KEY').lower()
 
         # auth not attempted
         if not key:

@@ -43,7 +43,7 @@ Beware that http server software might exclude unrecognized custom header, which
 All resources are returned in **JSON** format.
 
 ### Authentication
-This project adopts a simple application level authentication. Every request should contains a custom header `Secret-Key`, whose value should be the hashed SECRET_KEY using `SHA256` in `setting.py`.
+This project adopts a simple application level authentication. Every request should contains a custom header `Secret-Key`, whose value should be the hashed SECRET_KEY using `SHA256` in `setting.py`. **Change `Secret-Key` in production environment.**
 
 ### Book
 #### GET /books/
