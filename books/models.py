@@ -6,6 +6,10 @@ import django.contrib.postgres.fields as postgres
 from common.models import Comment, Resource
 
 
+def book_cover_path(instance, filename):
+    return f'book/cover/{instance.isbn}/{filename}'
+
+
 class Book(Resource):
     """
     Book entity class.
@@ -56,7 +60,7 @@ class Book(Resource):
     price = models.CharField(_("pricing"), blank=True, default='', max_length=20)
     pages = models.PositiveIntegerField(_("pages"), null=True, blank=True)
     isbn = models.CharField(_("ISBN"), blank=True, max_length=20, unique=True, db_index=True)
-    img_url = models.URLField(_("image url"), blank=True, default='', max_length=500)
+    cover = models.ImageField(_("cover picture"), upload_to=book_cover_path, null=True, blank=True)
 
     class Meta:
         # more info: https://docs.djangoproject.com/en/2.2/ref/models/options/

@@ -3,8 +3,11 @@ A RESTful web API service, serves books, films and records.
 
 ## Dependency
 - Python 3.6+
-- Django 2.2.x
-- Django REST Framework 3.10.x
+- Django 2.2+s
+- Psycopg2
+- Pillow
+- DRF-base64
+- Django REST Framework 3.11.x
 
 ## Configuration
 ### Database
@@ -95,10 +98,9 @@ Add a new book.
 | `pub_month` | Integer |❌|
 | `binding` | String |❌|
 | `price` | String. But Integer is suggested. |❌|
-| `comments` ||❌|
 | `language` | String. 2-Letter language code. Note that not all codes in [ISO 639-1](https://www.wikiwand.com/en/ISO_639-1) are allowed.|❌|
 | `other` | Any other information about the book. This is a nested json field.|❌|
-| `img_url` | URL string. Book cover image.|❌|
+| `cover` | base64 encoded image.|❌|
 | `pages` | Integer |❌|
 
 #### POST /books/:id/comments/
@@ -141,7 +143,6 @@ Partially update a book. Parameters are the same as the POST method.
 Partially update a book comment. Parameters are the same as the POST method.
 
 ## TODO
-- Films service
-- Records service
-- Pre-make initial migration file and add RunSQL to it
+- Films
+- Records
  

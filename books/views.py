@@ -125,6 +125,11 @@ class BookRetrieveUpdateDestroy(views.RetrieveUpdateDestroyView):
     serializer_class = BookSerializer
     lookup_url_kwarg = 'book_id'
 
+    def perform_hard_destroy(self, instance):
+        """ delete the cover file first """
+        instance.cover.delete(save=False)
+        instance.delete()
+
 
 # book comment classes
 class BookCommentListCreate(CommentListCreateView):

@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Book, BookComment
 from core.validators import ValidUniqueTogetherValidator
 from core.serializers import PrimayKeyHyperlinkField
+from drf_base64.fields import Base64ImageField
+
 
 class BookSerializer(serializers.ModelSerializer):
     """
@@ -11,6 +13,7 @@ class BookSerializer(serializers.ModelSerializer):
     """
     # TODO pagination of nested objects
     comments = serializers.SerializerMethodField('get_comments')
+    cover = Base64ImageField(required=False)
 
     def get_comments(self, book):
         """
@@ -42,9 +45,9 @@ class BookSerializer(serializers.ModelSerializer):
             'comments',
             'language',
             'other',
-            'img_url',
             'rating',
             'pages',
+            'cover',
             'edited_time'
         ]
 

@@ -89,8 +89,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'donotban',
         'USER': 'donotban',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
+        'PASSWORD': 'donotbansilvousplait',
+        'HOST': '172.17.8.35',
         'OPTIONS': {
             'client_encoding': 'UTF8',
             # 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_DEFAULT,
@@ -132,8 +132,8 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
+# Media files
 
-STATIC_URL = '/static/'
+MEDIA_ROOT = 'E:\\temp'
+MEDIA_URL = '/'
 
