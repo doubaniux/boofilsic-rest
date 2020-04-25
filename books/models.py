@@ -78,17 +78,6 @@ class Book(Resource):
     def __str__(self):
         return self.title
 
-    def save(self):
-        """ update rating before save to db """
-        # NOTE need test here
-        if self.rating_number and self.rating_total_score:
-            self.rating = Decimal(str(round(self.rating_total_score / self.rating_number, 1)))
-        super().save()
-
-    def get_absolute_url(self):
-        raise NotImplementedError
-        # return reverse("Book_detail", kwargs={"pk": self.pk})
-
 
 class BookComment(Comment):
 

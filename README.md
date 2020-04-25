@@ -26,9 +26,10 @@ DATABASES = {
 ```
 
 ### Migration
-Make initial migrations
+Make initial migrations.
+To add migrations to an app that doesn’t have a migrations directory, run makemigrations with the app’s app_label.
 ```bash
-$ python manage.py makemigrations
+$ python manage.py makemigrations [app_label]
 ```
 If working with existing resource tables, apply migrations with parameter `--fake`, for example
 ```bash

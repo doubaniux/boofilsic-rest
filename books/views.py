@@ -106,7 +106,7 @@ class BookListCreate(views.ListCreateView):
             'lower_than': lower_than,
         }
 
-        # NOTE what if I passed in invalid params?
+        # undefined query params will be ignored
         query_params = dict((k.lower(), v) for k, v in self.request.query_params.items())
         query_args = []
         for k, v in query_params.items():

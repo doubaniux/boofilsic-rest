@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -90,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'donotban',
         'USER': 'donotban',
-        'PASSWORD': 'pleasedonotban',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'OPTIONS': {
             'client_encoding': 'UTF8',

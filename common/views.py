@@ -107,7 +107,7 @@ class CommentRetrieveUpdateDestroyView(views.RetrieveUpdateDestroyView):
             with transaction.atomic():
                 if instance.rating:
                     self.decrease_resource_rating(resource, instance.rating)
-                instance.is_deteleted = True
+                instance.is_deleted = True
                 instance.save()
         except IntegrityError as e:
             raise IntegrityError(

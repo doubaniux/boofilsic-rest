@@ -16,9 +16,6 @@ class ListCreateView(generics.ListCreateAPIView):
     Filter out instances with field is_deleted=False while retrieving instance list.
     """
     def list(self, request, *args, **kwargs):
-        """
-        TODO add option to display all(include is_deleted=true)
-        """
         queryset = self.filter_queryset(self.get_queryset())
         check_is_deleted_field(queryset.model)
         queryset = queryset.filter(is_deleted=False)

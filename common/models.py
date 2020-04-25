@@ -44,9 +44,9 @@ class Resource(models.Model):
     def get_absolute_url(self):
         raise NotImplementedError
 
-    def save(self):
-        """ update rating before saving to db """
+    def save(self, *args, **kwargs):
+        """ update rating before save to db """
         # NOTE need test here
         if self.rating_number and self.rating_total_score:
             self.rating = Decimal(str(round(self.rating_total_score / self.rating_number, 1)))
-        super().save()
+        super().save(*args, **kwargs)
