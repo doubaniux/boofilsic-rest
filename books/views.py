@@ -1,7 +1,8 @@
 import re
 from core import views
-from .models import Book
-from .serializers import BookSerializer
+from common.views import *
+from .models import Book, BookComment
+from .serializers import BookSerializer, BookCommentSerializer
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import ParseError
@@ -29,7 +30,7 @@ class BookListCreate(views.ListCreateView):
     def get_queryset(self):
         """
         filter objects according to query string.
-        pagination is handled at `self.list()`
+        pagination is handled in `self.list()`
         """
         def title(value, query_args):
             q = Q()
@@ -105,6 +106,7 @@ class BookListCreate(views.ListCreateView):
             'lower_than': lower_than,
         }
 
+        # NOTE what if I passed in invalid params?
         query_params = dict((k.lower(), v) for k, v in self.request.query_params.items())
         query_args = []
         for k, v in query_params.items():
@@ -123,3 +125,16 @@ class BookRetrieveUpdateDestroy(views.RetrieveUpdateDestroyView):
     serializer_class = BookSerializer
     lookup_url_kwarg = 'book_id'
 
+
+# book comment classes
+class BookCommentListCreate(CommentListCreateView):
+    queryset = BookComment.objects.all()
+    serializer_class = BookCommentSerializer
+    resource_name = 'book'
+
+from rest_framework.generics import RetrieveUpdateDestroyAPIView as rest
+class BookCommentRetrieveUpdateDestroy(CommentRetrieveUpdateDestroyView):
+    queryset = BookComment.objects.all()
+    serializer_class = BookCommentSerializer
+    lookup_url_kwarg = 'comment_id'
+    resource_name = 'book'

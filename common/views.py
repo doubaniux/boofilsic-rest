@@ -2,8 +2,6 @@ from django.db import IntegrityError
 from django.db import transaction
 from django.utils import timezone
 from core import views
-from .models import BookComment
-from .serializers import BookCommentSerializer
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 
@@ -236,18 +234,4 @@ def validate_rating(rating):
         return True
     else:
         msg = {'detail': "Rating must be one of %s" % str([float(x) for x in valid_choices])}
-        raise ValidationError(msg)
-
-
-# book comment classes
-class BookCommentListCreate(CommentListCreateView):
-    queryset = BookComment.objects.all()
-    serializer_class = BookCommentSerializer
-    resource_name = 'book'
-
-from rest_framework.generics import RetrieveUpdateDestroyAPIView as rest
-class BookCommentRetrieveUpdateDestroy(CommentRetrieveUpdateDestroyView):
-    queryset = BookComment.objects.all()
-    serializer_class = BookCommentSerializer
-    lookup_url_kwarg = 'comment_id'
-    resource_name = 'book'
+        raise ValidationError(msg) 

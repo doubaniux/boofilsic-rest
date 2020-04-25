@@ -1,8 +1,8 @@
 from django.urls import path
 from .views import BookListCreate
 from .views import BookRetrieveUpdateDestroy
-from comments.views import BookCommentListCreate
-from comments.views import BookCommentRetrieveUpdateDestroy
+from .views import BookCommentListCreate
+from .views import BookCommentRetrieveUpdateDestroy
 
 
 app_name = 'books'

@@ -17,5 +17,4 @@ from django.urls import path, include
 
 urlpatterns = [
     path('books/', include('books.urls')),
-    path('comments/', include('comments.urls')),
 ]

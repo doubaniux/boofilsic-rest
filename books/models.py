@@ -1,10 +1,12 @@
+from decimal import *
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-import django.contrib.postgres.fields as postgres
 from django.core.serializers.json import DjangoJSONEncoder
+import django.contrib.postgres.fields as postgres
+from common.models import Comment, Resource
 
 
-class Book(models.Model):
+class Book(Resource):
     """
     Book entity class.
     Created according to https://book.douban.com.
@@ -27,10 +29,6 @@ class Book(models.Model):
         ('zu', 'zu'), ('unknown', 'unknown')
     ]
 
-    # todo:
-    # figure out that if every field needs null or blank to be ture or false
-    # read more about meta
-    id = models.AutoField(primary_key=True, db_index=True)
     # widely recognized name, usually in Chinese
     title = models.CharField(_("title"), max_length=200)
     subtitle = models.CharField(_("subtitle"), blank=True, default='', max_length=200)
@@ -58,13 +56,7 @@ class Book(models.Model):
     price = models.CharField(_("pricing"), blank=True, default='', max_length=20)
     pages = models.PositiveIntegerField(_("pages"), null=True, blank=True)
     isbn = models.CharField(_("ISBN"), blank=True, max_length=20, unique=True, db_index=True)
-    # any other non-standard info, eg: imprint/series/......
-    other = postgres.JSONField(_("other information"), blank=True, encoder=DjangoJSONEncoder, default=dict)
     img_url = models.URLField(_("image url"), blank=True, default='', max_length=500)
-    rating = models.DecimalField(_("rating"), null=True, blank=True, max_digits=64, decimal_places=63)
-    # the time when the entity is edited
-    edited_time = models.DateTimeField(_("edited time"), auto_now_add=True)
-    is_deleted = models.BooleanField(_("is deleted"), null=False, blank=True, default=False)
 
     class Meta:
         # more info: https://docs.djangoproject.com/en/2.2/ref/models/options/
@@ -76,16 +68,35 @@ class Book(models.Model):
         managed = True
         db_table = 'book'
         constraints = [
-            models.CheckConstraint(check=models.Q(rating__gte=0), name='rating_lowerbound'),
-            models.CheckConstraint(check=models.Q(rating__lte=5), name='rating_upperbound'),
-            models.CheckConstraint(check=models.Q(rating__gte=0), name='pub_year_lowerbound'),
-            models.CheckConstraint(check=models.Q(rating__lte=12), name='pub_month_upperbound'),
-            models.CheckConstraint(check=models.Q(rating__gte=1), name='pub_month_lowerbound'),
+            models.CheckConstraint(check=models.Q(rating__gte=0), name='book_rating_lowerbound'),
+            models.CheckConstraint(check=models.Q(rating__lte=5), name='book_rating_upperbound'),
+            models.CheckConstraint(check=models.Q(pub_year__gte=0), name='pub_year_lowerbound'),
+            models.CheckConstraint(check=models.Q(pub_month__lte=12), name='pub_month_upperbound'),
+            models.CheckConstraint(check=models.Q(pub_month__gte=1), name='pub_month_lowerbound'),
         ]
 
     def __str__(self):
         return self.title
 
+    def save(self):
+        """ update rating before save to db """
+        # NOTE need test here
+        if self.rating_number and self.rating_total_score:
+            self.rating = Decimal(str(round(self.rating_total_score / self.rating_number, 1)))
+        super().save()
+
     def get_absolute_url(self):
         raise NotImplementedError
         # return reverse("Book_detail", kwargs={"pk": self.pk})
+
+
+class BookComment(Comment):
+
+    book = models.ForeignKey("books.Book", db_column="book_id", on_delete=models.CASCADE, related_name='comments')
+
+    class Meta:
+        db_table = 'bookcomment'
+        constraints = [
+            models.CheckConstraint(check=models.Q(rating__gte=0), name='book_comment_rating_lowerbound'),
+            models.CheckConstraint(check=models.Q(rating__lte=5), name='book_comment_rating_upperbound'),
+        ]

@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'rest_framework',
     'books.apps.BooksConfig',
-    'comments.apps.CommentsConfig',
+    'common.apps.CommonConfig',
     'core.apps.CoreConfig',
 ]
 
@@ -91,7 +91,7 @@ DATABASES = {
         'NAME': 'donotban',
         'USER': 'donotban',
         'PASSWORD': 'pleasedonotban',
-        'HOST': 'localhost',
+        'HOST': '49.233.200.133',
         'OPTIONS': {
             'client_encoding': 'UTF8',
             # 'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_DEFAULT,

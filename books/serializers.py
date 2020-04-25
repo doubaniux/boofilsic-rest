@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Book
-from comments.serializers import BookCommentSerializer
-
+from .models import Book, BookComment
+from core.validators import ValidUniqueTogetherValidator
+from core.serializers import PrimayKeyHyperlinkField
 
 class BookSerializer(serializers.ModelSerializer):
     """
@@ -46,4 +46,32 @@ class BookSerializer(serializers.ModelSerializer):
             'rating',
             'pages',
             'edited_time'
+        ]
+
+
+class BookCommentSerializer(serializers.ModelSerializer):
+    """
+    Book comment.
+    """
+    book = PrimayKeyHyperlinkField(
+        queryset=Book.objects.filter(is_deleted=False),
+        view_name="books:book_retrieve_update_delete",
+        lookup_url_kwarg="book_id",
+    )
+
+    class Meta:
+        model = BookComment
+        fields = [
+            'id',
+            'user_id',
+            'rating',
+            'content',
+            'book',
+            'edited_time'
+        ]
+        validators = [
+            ValidUniqueTogetherValidator(
+                queryset=BookComment.objects.all(),
+                fields=['user_id', 'book']
+            )
         ]
