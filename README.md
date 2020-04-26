@@ -28,6 +28,12 @@ DATABASES = {
 }
 ```
 
+Configure the path of media files
+```python
+MEDIA_ROOT = '/var/www/boofilsic/media/'
+MEDIA_URL = '/media/'
+```
+
 ### Migration
 Make initial migrations.
 To add migrations to an app that doesn’t have a migrations directory, run makemigrations with the app’s app_label.
