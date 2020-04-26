@@ -57,7 +57,7 @@ class Book(Resource):
     pub_month = models.IntegerField(_("published month"), null=True, blank=True)
     binding = models.CharField(_("binding"), blank=True, default='', max_length=50)
     # since data origin is not formatted and might be CNY USD or other currency, use char instead
-    price = models.CharField(_("pricing"), blank=True, default='', max_length=20)
+    price = models.CharField(_("pricing"), blank=True, default='', max_length=50)
     pages = models.PositiveIntegerField(_("pages"), null=True, blank=True)
     isbn = models.CharField(_("ISBN"), blank=True, max_length=20, unique=True, db_index=True)
     cover = models.ImageField(_("cover picture"), upload_to=book_cover_path, default='', blank=True)
