@@ -31,7 +31,6 @@ class Resource(models.Model):
     rating_total_score = models.PositiveIntegerField(null=True, blank=True)
     rating_number = models.PositiveIntegerField(null=True, blank=True)
     rating = models.DecimalField(_("rating"), null=True, blank=True, max_digits=2, decimal_places=1)
-    img_url = models.URLField(_("image url"), blank=True, default='', max_length=500)
     # the time when the entity is edited
     edited_time = models.DateTimeField(_("edited time"), auto_now_add=True)
     is_deleted = models.BooleanField(_("is deleted"), null=False, blank=True, default=False)
