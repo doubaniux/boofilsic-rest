@@ -134,6 +134,6 @@ USE_TZ = True
 
 # Media files
 
-MEDIA_ROOT = 'E:\\temp'
+MEDIA_ROOT = ''
 MEDIA_URL = '/'
 

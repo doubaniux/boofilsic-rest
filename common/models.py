@@ -27,7 +27,7 @@ class Comment(models.Model):
 class Resource(models.Model):
 
     id = models.AutoField(primary_key=True, db_index=True)
-    other = postgres.JSONField(_("other information"), blank=True, encoder=DjangoJSONEncoder, default=dict)
+    other = postgres.JSONField(_("other information"), blank=True, null=True, encoder=DjangoJSONEncoder, default=dict)
     rating_total_score = models.PositiveIntegerField(null=True, blank=True)
     rating_number = models.PositiveIntegerField(null=True, blank=True)
     rating = models.DecimalField(_("rating"), null=True, blank=True, max_digits=2, decimal_places=1)
