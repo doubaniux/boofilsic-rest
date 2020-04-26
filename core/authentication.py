@@ -9,7 +9,7 @@ class SimpleAuthentication(authentication.BaseAuthentication):
 
     def authenticate(self, request):
         # get request header Secret-Key
-        key = request.META.get('HTTP_SECRET_KEY').lower()
+        key = request.META.get('HTTP_SECRET_KEY')
 
         # auth not attempted
         if not key:
@@ -17,7 +17,7 @@ class SimpleAuthentication(authentication.BaseAuthentication):
             raise exceptions.AuthenticationFailed(msg)
 
         # auth attempted
-        if key == self.__hash(SECRET_KEY):
+        if key.lower() == self.__hash(SECRET_KEY):
             return (None, True)
         else:
             msg = _('Authentication failed.')
