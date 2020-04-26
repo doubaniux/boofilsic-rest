@@ -117,18 +117,14 @@ class BookListCreate(views.ListCreateView):
         return queryset
 
 
-class BookRetrieveUpdateDestroy(views.RetrieveUpdateDestroyView):
+class BookRetrieveUpdateDestroy(UpdateLocalFileMixin ,views.RetrieveUpdateDestroyView):
     """
     It is strongly recommended delete book object with `hard=true`
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     lookup_url_kwarg = 'book_id'
-
-    def perform_hard_destroy(self, instance):
-        """ delete the cover file first """
-        instance.cover.delete(save=False)
-        instance.delete()
+    file_fields = 'cover'
 
 
 # book comment classes

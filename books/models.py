@@ -7,7 +7,7 @@ from common.models import Comment, Resource
 
 
 def book_cover_path(instance, filename):
-    return f'book/cover/{instance.isbn}/{filename}'
+    return f'book/cover/{filename}'
 
 
 class Book(Resource):

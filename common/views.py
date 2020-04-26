@@ -238,4 +238,49 @@ def validate_rating(rating):
         return True
     else:
         msg = {'detail': "Rating must be one of %s" % str([float(x) for x in valid_choices])}
-        raise ValidationError(msg) 
+        raise ValidationError(msg)
+
+
+class UpdateLocalFileMixin:
+    """
+    Used to delete the previous local file when resource changes.
+    """
+    # NOTE make sure in MRO this mixin is prior to other so that
+    # the methods can overwrite
+
+    def check_file_fields(self, instance):
+        assert hasattr(self, 'file_fields'), (
+            "attribute `file_fields` has to be specified."
+        )
+
+        if isinstance(self.file_fields, str):
+            self.file_fields = [self.file_fields]
+        elif not isinstance(self.file_fields, list):
+            raise TypeError("`file_fields` has to be a list of field names or name of one field.")
+
+        for file_field in self.file_fields:
+            assert hasattr(instance, file_field), (
+                "`%s` has no field `%s`."
+                % (instance.__class__.__name__, file_field)
+            )
+
+    def perform_hard_destroy(self, instance):
+        """ handle DELETE """
+        self.check_file_fields(instance)
+        for file_field in self.file_fields:
+            getattr(instance, file_field).delete(save=False)
+        instance.delete()
+
+    def perform_update(self, serializer):
+        """ handle PUT and PATCH """
+        # TODO do something to ensure integrity
+        self.check_file_fields(serializer.instance)
+        if serializer.partial:
+            for file_field in self.file_fields:
+                if serializer.validated_data.get(file_field) is not None:
+                    getattr(serializer.instance, file_field).delete(save=False)
+        else:
+            for file_field in self.file_fields:
+                if serializer.validated_data.get(file_field) is None:
+                    getattr(serializer.instance, file_field).delete(save=False)
+        serializer.save()

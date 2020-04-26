@@ -6,7 +6,6 @@ A RESTful web API service, serves books, films and records.
 - Django 2.2+s
 - Psycopg2
 - Pillow
-- DRF-base64
 - Django REST Framework 3.11.x
 
 ## Configuration
@@ -106,7 +105,7 @@ Add a new book.
 | `price` | String. But Integer is suggested. |❌|
 | `language` | String. 2-Letter language code. Note that not all codes in [ISO 639-1](https://www.wikiwand.com/en/ISO_639-1) are allowed.|❌|
 | `other` | Any other information about the book. This is a nested json field.|❌|
-| `cover` | base64 encoded image.|❌|
+| `cover` | base64 encoded image. Set to `null` to delete when PATCH.|❌|
 | `pages` | Integer |❌|
 
 #### POST /books/:id/comments/
